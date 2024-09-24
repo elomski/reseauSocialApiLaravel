@@ -22,8 +22,9 @@ Route::prefix('v1.0.0')->group(function () {
         Route::get('logout', [AuthController::class, 'logout']);
         Route::post('admin', [GroupController::class, 'createAdministrator']);
         Route::post('group', [GroupController::class, 'registerGroup']);
-        Route::post('member', [GroupController::class, 'createMember']);
-        Route::post('file',[GroupController::class, 'uploadFile']);
+        Route::post('/groups/{groupId}/members', [GroupController::class, 'addMember']);
+        Route::post('/groups/{groupId}/invite', [GroupController::class, 'invite']);
+        Route::post('/groups/{group_id}/upload',[GroupController::class, 'uploadFile']);
         Route::get('allmember', [UserController::class, 'index']);
     });
 

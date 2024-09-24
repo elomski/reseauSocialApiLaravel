@@ -24,7 +24,6 @@ class GroupCreateRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'admin_id' => 'required',
             'name' => 'required|max:22|min:8|string',
             'description' => 'required|max:22|min:8|string'
         ];

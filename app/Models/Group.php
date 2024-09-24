@@ -11,12 +11,17 @@ class Group extends Model
 
 
     public $fillable =[
-        'admin_id',
         'name',
-        'description'
+        'description',
+        'created_by'
     ];
 
     public function members(){
         return $this->hasMany(Member::class);
     }
+
+    public function admin(){
+        return $this->belongsTo(User::class, 'created_by');
+    }
+    
 }

@@ -2,58 +2,67 @@
 
 namespace App\Repositories;
 
+use App\Http\Requests\GroupRequest\GroupCreateRequest;
 use App\Interfaces\GroupInterface;
-use App\Mail\AddMemberMail;
 use App\Models\Admin;
-use App\Models\administrateur;
 use App\Models\Group;
 use App\Models\Member;
 use App\Models\User;
 use Illuminate\Support\Facades\Mail;
 
+use function PHPUnit\Framework\returnSelf;
+
 class GroupRepository implements GroupInterface
 {
-    public function groupCreate(array $data){
-        return Group::create($data);
-    }
 
-    public function creationAdmin(array $data){
+    public function creationAdmin(array $data)
+    {
         return Admin::create($data);
     }
 
-    public function creationMember(array $data){
+    public function creationMember(array $data)
+    {
         return Member::create($data);
     }
 
-    public function addMember(array $data){
-
-        $user = User::where('email', $data['email'])->first();
 
 
-        if(!$user){
-           $Nuser = User::create([
-                $data['name'],
-                $data['email'],
-                $data['password'],
-            ]);
-            return $Nuser;
+    public function createGroup(array $data)
+    {
+        $group = Group::create([
+            'name' => $data['name'],
+            'description' => $data['description'],
+            'created_by' => auth()->user()->id
+        ]);
 
-            $user_id = $Nuser()->id->get();
+        Member::create([
+            'group_id' => $group->id,
+            'user_id' => auth()->user()->id,
+            'is_admin' => true
+        ]);
 
-            if($user !== null) {
-                $member = Member::create(
-                    $user_id,
-                    $data['group_id'],
-                    $data['fullname']
-                );
-               return $member;
-            }
+        return $group;
+    }
+
+
+    public function addMember(array $data, $groupId)
+    {
+        $existingMember = Member::where('group_id', $groupId)
+            ->where('user_id', $data['user_id'])
+            ->first();
+
+
+
+        if ($existingMember) {
+            return response()->json(['message' => 'L\'utilisateur est deja membre de ce groupe']);
         }
 
-        Mail::to($data['email'])->send(new AddMemberMail(
-            $data['email'],
-            $data[''],
-            $data['']
-        ));
-        }
+        $member = Member::create([
+            'group_id' => $groupId,
+            'user_id' => $data['user_id'],
+            'is_admin' => false
+        ]);
+
+        return $member;
+    }
 }

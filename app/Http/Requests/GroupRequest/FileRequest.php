@@ -24,8 +24,8 @@ class FileRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'file' => 'required|file|max:10000',
-            // 'group_id' => 'required|exists:groups,id'
+           'file' => 'required|file|mimes:png,jpg,pdf,doc,docx,zip',
+            'group_id' => 'required|exists:groups,id'
         ];
     }
 
@@ -35,8 +35,8 @@ class FileRequest extends FormRequest
         return [
             'file.required' => 'le ficher est requis',
             'file.max' => 'le ficher doit avoir au max 10000000',
-            // 'group_id.required' => 'l\'id est requis',
-            // 'group_id.exists' => 'l\'id excite deja',
+            'group_id.required' => 'l\'id est requis',
+            'group_id.exists' => 'l\'id excite deja',
         ];
 
     }

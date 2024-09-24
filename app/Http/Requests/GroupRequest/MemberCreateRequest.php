@@ -24,7 +24,6 @@ class MemberCreateRequest extends FormRequest
         return [
             'user_id' => 'required',
             'group_id' => 'required',
-            'pseudo' => 'required|max:22|min:8|string'
         ];
     }
 
@@ -34,10 +33,6 @@ class MemberCreateRequest extends FormRequest
 
             'user_id' => 'required',
             'group_id' => 'required',
-
-            'pseudo.required' => 'le pseudo est requis',
-            'pseudo.min' => 'le pseudo dois etre entre 8 et 22 caracteres',
-            'pseudo.max' => 'le pseudo  dois etre entre 8 et 22 caracteres'
         ];
         }
 }

@@ -12,7 +12,7 @@ class Member extends Model
     public $fillable = [
         'user_id',
         'group_id',
-        'pseudo'
+        'is_admin'
     ];
 
 
